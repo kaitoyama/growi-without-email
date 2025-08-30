@@ -59,8 +59,6 @@ module.exports = (crowi: Crowi): Router => {
    *                      type: string
    *                    username:
    *                      type: string
-   *                    email:
-   *                      type: string
    *                    password:
    *                      type: string
    *                    app:globalLang:
@@ -89,7 +87,6 @@ module.exports = (crowi: Crowi): Router => {
 
     const name = registerForm.name;
     const username = registerForm.username;
-    const email = registerForm.email;
     const password = registerForm.password;
     const language = registerForm['app:globalLang'] || 'en_US';
 
@@ -100,7 +97,6 @@ module.exports = (crowi: Crowi): Router => {
       adminUser = await installerService.install({
         name,
         username,
-        email,
         password,
       }, language);
     }

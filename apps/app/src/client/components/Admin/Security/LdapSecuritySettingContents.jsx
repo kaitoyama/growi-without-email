@@ -282,26 +282,7 @@ class LdapSecuritySettingContents extends React.Component {
               </div>
             </div>
 
-            <div className="row my-3">
-              <label className="form-label text-start text-md-end col-md-3 col-form-label">
-                <strong htmlFor="attrMapMail">{t('Email')}</strong>
-              </label>
-              <div className="col-md-9">
-                <input
-                  className="form-control"
-                  type="text"
-                  placeholder="Default: mail"
-                  name="attrMapMail"
-                  value={adminLdapSecurityContainer.state.ldapAttrMapMail || ''}
-                  onChange={e => adminLdapSecurityContainer.changeAttrMapMail(e.target.value)}
-                />
-                <p className="form-text text-muted">
-                  <small>
-                    {t('security_settings.ldap.mail_detail')}
-                  </small>
-                </p>
-              </div>
-            </div>
+            {/* Email マッピングは無効化 */}
 
             <div className="row my-3">
               <label className="form-label text-start text-md-end col-md-3 col-form-label">

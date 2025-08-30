@@ -636,11 +636,14 @@ const factory = (crowi) => {
       return callback(err);
     }
 
-    // check email duplication because email must be unique
-    const count = await this.count({ email });
-    if (count > 0) {
-      // eslint-disable-next-line no-param-reassign
-      email = generateRandomEmail();
+    // email未使用時は重複チェックをスキップ
+    if (email != null && email !== '') {
+      // check email duplication because email must be unique
+      const count = await this.count({ email });
+      if (count > 0) {
+        // eslint-disable-next-line no-param-reassign
+        email = generateRandomEmail();
+      }
     }
 
     newUser.name = name;

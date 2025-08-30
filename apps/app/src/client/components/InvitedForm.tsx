@@ -80,21 +80,7 @@ export const InvitedForm = (props: InvitedFormProps): JSX.Element => {
     <div className="nologin-dialog px-3 pb-3 mx-auto" id="nologin-dialog">
       { formNotification() }
       <form role="form" onSubmit={submitHandler} id="invited-form">
-        {/* Email Form */}
-        <div className="input-group">
-          <span className="input-group-text">
-            <span className="material-symbols-outlined">mail</span>
-          </span>
-          <input
-            type="text"
-            className="form-control"
-            disabled
-            placeholder={t('Email')}
-            name="invitedForm[email]"
-            defaultValue={user.email}
-            required
-          />
-        </div>
+        {/* Email 入力は廃止 */}
         {/* UserID Form */}
         <div className="input-group" id="input-group-username">
           <span className="input-group-text">

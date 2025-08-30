@@ -304,31 +304,7 @@ pWVdnzS1VCO8fKsJ7YYIr+JmHvseph3kFUOI5RqkCcMZlKUv83aUThsTHw==
                     </p>
                   </td>
                 </tr>
-                <tr>
-                  <th>{t('security_settings.form_item_name.attrMapMail')}</th>
-                  <td>
-                    <input
-                      className="form-control"
-                      type="text"
-                      value={adminSamlSecurityContainer.state.samlAttrMapMail}
-                      onChange={e => adminSamlSecurityContainer.changeSamlAttrMapMail(e.target.value)}
-                    />
-                    <p className="form-text text-muted">
-                      <small dangerouslySetInnerHTML={{ __html: t('security_settings.SAML.mapping_detail', { target: 'Email' }) }} />
-                    </p>
-                  </td>
-                  <td>
-                    <input
-                      className="form-control"
-                      type="text"
-                      value={adminSamlSecurityContainer.state.envAttrMapMail || ''}
-                      readOnly
-                    />
-                    <p className="form-text text-muted">
-                      <small dangerouslySetInnerHTML={{ __html: t('security_settings.SAML.Use env var if empty', { env: 'SAML_ATTR_MAPPING_MAIL' }) }} />
-                    </p>
-                  </td>
-                </tr>
+                {/* Email マッピングは無効化 */}
                 <tr>
                   <th>{t('security_settings.form_item_name.attrMapFirstName')}</th>
                   <td>
@@ -416,25 +392,7 @@ pWVdnzS1VCO8fKsJ7YYIr+JmHvseph3kFUOI5RqkCcMZlKUv83aUThsTHw==
               </p>
             </div>
 
-            <div className="row mb-5 ms-3">
-              <div className="form-check form-check-success">
-                <input
-                  id="bindByEmail-SAML"
-                  className="form-check-input"
-                  type="checkbox"
-                  checked={adminSamlSecurityContainer.state.isSameEmailTreatedAsIdenticalUser || false}
-                  onChange={() => { adminSamlSecurityContainer.switchIsSameEmailTreatedAsIdenticalUser() }}
-                />
-                <label
-                  className="form-label form-check-label"
-                  htmlFor="bindByEmail-SAML"
-                  dangerouslySetInnerHTML={{ __html: t('security_settings.Treat email matching as identical') }}
-                />
-              </div>
-              <p className="form-text text-muted">
-                <small dangerouslySetInnerHTML={{ __html: t('security_settings.Treat email matching as identical_warn') }} />
-              </p>
-            </div>
+            {/* Email 同一判定の設定は無効化 */}
 
             <h3 className="alert-anchor border-bottom mb-4">
               Attribute-based Login Control

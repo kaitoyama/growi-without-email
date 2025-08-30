@@ -613,11 +613,20 @@ class PassportService implements S2sMessageHandlable {
 
       logger.debug('Configured issuer %s %O', newOidcIssuer.issuer, newOidcIssuer.metadata);
 
+      // Determine acceptable ID Token signing algorithm from issuer metadata
+      // Default in OIDC is RS256, but some providers (e.g. ES256) are used
+      const supportedIdTokenAlgs = (newOidcIssuer.metadata as any).id_token_signing_alg_values_supported as string[] | undefined;
+      const preferredIdTokenAlg = supportedIdTokenAlgs?.includes('ES256') ? 'ES256'
+        : supportedIdTokenAlgs?.includes('RS256') ? 'RS256'
+        : 'RS256';
+
       const client = new newOidcIssuer.Client({
         client_id: clientId,
         client_secret: clientSecret,
         redirect_uris: [redirectUri],
         response_types: ['code'],
+        // Align expected alg with provider to avoid "expected RS256, got ES256" validation errors
+        id_token_signed_response_alg: preferredIdTokenAlg,
       });
       // prevent error AssertionError [ERR_ASSERTION]: id_token issued in the future
       // Doc: https://github.com/panva/node-openid-client/tree/v2.x#allow-for-system-clock-skew
@@ -626,7 +635,7 @@ class PassportService implements S2sMessageHandlable {
       passport.use('oidc', new OidcStrategy(
         {
           client,
-          params: { scope: 'openid email profile' },
+          params: { scope: 'openid profile' },
         },
         (tokenset, userinfo, done) => {
           if (userinfo) {
@@ -986,7 +995,8 @@ class PassportService implements S2sMessageHandlable {
   }
 
   isSameEmailTreatedAsIdenticalUser(providerType: Exclude<IExternalAuthProviderType, 'ldap'>): boolean {
-    return configManager.getConfig(`security:passport-${providerType}:isSameEmailTreatedAsIdenticalUser`);
+    // email 同一判定は無効化
+    return false;
   }
 
   literalUnescape(string: string) {

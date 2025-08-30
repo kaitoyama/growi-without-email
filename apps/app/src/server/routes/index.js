@@ -157,17 +157,19 @@ module.exports = function(crowi, app) {
 
   app.get('/_search'                              , loginRequired, next.delegateToNext);
 
-  app.use('/forgot-password', express.Router()
-    .use(forgotPassword.checkForgotPasswordEnabledMiddlewareFactory(crowi))
-    .get('/', forgotPassword.renderForgotPassword(crowi))
-    .get('/:token', injectResetOrderByTokenMiddleware, forgotPassword.renderResetPassword(crowi))
-    .use(forgotPassword.handleErrorsMiddleware(crowi)));
+  // パスワードリセットのUIルートは無効化
+  // app.use('/forgot-password', express.Router()
+  //   .use(forgotPassword.checkForgotPasswordEnabledMiddlewareFactory(crowi))
+  //   .get('/', forgotPassword.renderForgotPassword(crowi))
+  //   .get('/:token', injectResetOrderByTokenMiddleware, forgotPassword.renderResetPassword(crowi))
+  //   .use(forgotPassword.handleErrorsMiddleware(crowi)));
 
   app.get('/_private-legacy-pages', next.delegateToNext);
 
-  app.use('/user-activation', express.Router()
-    .get('/:token', applicationInstalled, injectUserRegistrationOrderByTokenMiddleware, userActivation.renderUserActivationPage(crowi))
-    .use(userActivation.tokenErrorHandlerMiddeware(crowi)));
+  // ユーザー有効化（メールベース）のUIルートは無効化
+  // app.use('/user-activation', express.Router()
+  //   .get('/:token', applicationInstalled, injectUserRegistrationOrderByTokenMiddleware, userActivation.renderUserActivationPage(crowi))
+  //   .use(userActivation.tokenErrorHandlerMiddeware(crowi)));
 
   app.get('/share$', (req, res) => res.redirect('/'));
   app.get('/share/:linkId', next.delegateToNext);

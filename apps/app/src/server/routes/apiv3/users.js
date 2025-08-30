@@ -490,35 +490,8 @@ module.exports = (crowi) => {
    *                          description: reason for failure
    */
   router.post('/invite', accessTokenParser([SCOPE.WRITE.ADMIN.USER_MANAGEMENT]), loginRequiredStrictly, adminRequired, addActivity,
-    validator.inviteEmail, apiV3FormValidator,
     async(req, res) => {
-
-      // Delete duplicate email addresses
-      const emailList = Array.from(new Set(req.body.shapedEmailList));
-      let failedEmailList = [];
-
-      // Create users
-      const createUser = await User.createUsersByEmailList(emailList);
-      if (createUser.failedToCreateUserEmailList.length > 0) {
-        failedEmailList = failedEmailList.concat(createUser.failedToCreateUserEmailList);
-      }
-
-      // Send email
-      if (req.body.sendEmail) {
-        const sendEmail = await sendEmailByUserList(createUser.createdUserList);
-        if (sendEmail.failedToSendEmailList.length > 0) {
-          failedEmailList = failedEmailList.concat(sendEmail.failedToSendEmailList);
-        }
-      }
-
-      const parameters = { action: SupportedAction.ACTION_ADMIN_USERS_INVITE };
-      activityEvent.emit('update', res.locals.activity._id, parameters);
-
-      return res.apiv3({
-        createdUserList: createUser.createdUserList,
-        existingEmailList: createUser.existingEmailList,
-        failedEmailList,
-      }, 201);
+      return res.apiv3Err(new ErrorV3('Invitation by email is disabled in this instance', 'invitation-disabled'), 405);
     });
 
   /**

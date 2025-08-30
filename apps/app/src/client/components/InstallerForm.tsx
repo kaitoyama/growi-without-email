@@ -54,7 +54,6 @@ const InstallerForm = memo((props: Props): JSX.Element => {
     const {
       'registerForm[username]': { value: username },
       'registerForm[name]': { value: name },
-      'registerForm[email]': { value: email },
       'registerForm[password]': { value: password },
     } = formData;
 
@@ -62,7 +61,6 @@ const InstallerForm = memo((props: Props): JSX.Element => {
       registerForm: {
         username,
         name,
-        email,
         password,
         'app:globalLang': currentLocale,
       },
@@ -191,19 +189,7 @@ const InstallerForm = memo((props: Props): JSX.Element => {
             />
           </div>
 
-          <div className="input-group mb-3">
-            <label className="p-2 text-white opacity-75" aria-label={t('Email')} htmlFor="tiEmail">
-              <span className="material-symbols-outlined" aria-hidden>mail</span>
-            </label>
-            <input
-              id="tiEmail"
-              type="email"
-              className="form-control rounded"
-              placeholder={t('Email')}
-              name="registerForm[email]"
-              required
-            />
-          </div>
+          {/* email入力は廃止 */}
 
           <div className="input-group mb-3">
             <label className="p-2 text-white opacity-75" aria-label={t('Password')} htmlFor="tiPassword">

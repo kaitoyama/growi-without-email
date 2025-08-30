@@ -138,87 +138,11 @@ class LocalSecuritySettingContents extends React.Component {
                 <p className="form-text text-muted small">{t('security_settings.register_limitation_desc')}</p>
               </div>
             </div>
-            <div className="row">
-              <div className="col-12 col-md-4 text-start text-md-end">
-                <strong dangerouslySetInnerHTML={{ __html: t('security_settings.The whitelist of registration permission E-mail address') }} />
-              </div>
-              <div className="col-12 col-md-8">
-                <textarea
-                  className="form-control"
-                  type="textarea"
-                  name="registrationWhitelist"
-                  value={adminLocalSecurityContainer.state.registrationWhitelist.join('\n')}
-                  onChange={e => adminLocalSecurityContainer.changeRegistrationWhitelist(e.target.value)}
-                />
-                <p className="form-text text-muted small">
-                  {t('security_settings.restrict_emails')}
-                  <br />
-                  {t('security_settings.for_example')}
-                  <code>@growi.org</code>
-                  {t('security_settings.in_this_case')}
-                  <br />
-                  {t('security_settings.insert_single')}
-                </p>
-              </div>
-            </div>
+            {/* メールドメインの登録制限(Whitelist)は廃止 */}
 
-            <div className="row">
-              <label className="col-12 col-md-4 text-start text-md-end  col-form-label">{t('security_settings.Local.password_reset_by_users')}</label>
-              <div className="col-12 col-md-8">
-                <div className="form-check form-switch form-check-success">
-                  <input
-                    type="checkbox"
-                    className="form-check-input"
-                    id="isPasswordResetEnabled"
-                    checked={isPasswordResetEnabled}
-                    onChange={() => adminLocalSecurityContainer.switchIsPasswordResetEnabled()}
-                  />
-                  <label className="form-label form-check-label" htmlFor="isPasswordResetEnabled">
-                    {t('security_settings.Local.enable_password_reset_by_users')}
-                  </label>
-                </div>
-                {!isMailerSetup && (
-                  <div className="alert alert-warning p-2 my-1 small d-inline-block">
-                    <span>{t('commons:alert.password_reset_please_enable_mailer')}</span>
-                    <Link href="/admin/app#mail-settings">
-                      <span className="material-symbols-outlined">link</span> {t('app_setting.mail_settings')}
-                    </Link>
-                  </div>
-                )}
-                <p className="form-text text-muted small">
-                  {t('security_settings.Local.password_reset_desc')}
-                </p>
-              </div>
-            </div>
+            {/* パスワードリセット設定は無効化 */}
 
-            <div className="row">
-              <label className="col-12 col-md-4 text-start text-md-end  col-form-label">{t('security_settings.Local.email_authentication')}</label>
-              <div className="col-12 col-md-8">
-                <div className="form-check form-switch form-check-success">
-                  <input
-                    type="checkbox"
-                    className="form-check-input"
-                    id="isEmailAuthenticationEnabled"
-                    checked={isEmailAuthenticationEnabled}
-                    onChange={() => adminLocalSecurityContainer.switchIsEmailAuthenticationEnabled()}
-                  />
-                  <label className="form-label form-check-label" htmlFor="isEmailAuthenticationEnabled">
-                    {t('security_settings.Local.enable_email_authentication')}
-                  </label>
-                </div>
-                {!isMailerSetup && (
-                  <div className="alert alert-warning p-2 my-1 small d-inline-block">
-                    <span>{t('commons:alert.please_enable_mailer')}</span>
-                    <Link href="/admin/app#mail-settings">
-                      <span className="material-symbols-outlined">link</span> {t('app_setting.mail_settings')}
-                    </Link>
-                  </div>
-                )}
-                <p className="form-text text-muted small">
-                  {t('security_settings.Local.enable_email_authentication_desc')}
-                </p>
-              </div>
-            </div>
+            {/* メール認証設定は無効化 */}
 
             <div className="row my-3">
               <div className="offset-3 col-6">

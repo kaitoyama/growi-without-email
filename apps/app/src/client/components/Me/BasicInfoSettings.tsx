@@ -62,54 +62,9 @@ export const BasicInfoSettings = (): JSX.Element => {
         </div>
       </div>
 
-      <div className="row mt-3">
-        <label htmlFor="userForm[email]" className="text-start text-md-end col-md-3 col-form-label">{t('Email')}</label>
-        <div className="col-md-6">
-          <input
-            className="form-control"
-            type="text"
-            name="userForm[email]"
-            defaultValue={personalSettingsInfo?.email || ''}
-            onChange={e => changePersonalSettingsHandler({ email: e.target.value })}
-          />
-          {registrationWhitelist != null && registrationWhitelist.length !== 0 && (
-            <div className="form-text text-muted">
-              {t('page_register.form_help.email')}
-              <ul>
-                {registrationWhitelist.map(data => <li key={data}><code>{data}</code></li>)}
-              </ul>
-            </div>
-          )}
-        </div>
-      </div>
+      {/* email 入力は廃止 */}
 
-      <div className="row mt-3">
-        <label className="text-start text-md-end col-md-3 col-form-label">{t('Disclose E-mail')}</label>
-        <div className="col-md-6 my-auto">
-          <div className="form-check form-check-inline me-4">
-            <input
-              type="radio"
-              id="radioEmailShow"
-              className="form-check-input"
-              name="userForm[isEmailPublished]"
-              checked={personalSettingsInfo?.isEmailPublished === true}
-              onChange={() => changePersonalSettingsHandler({ isEmailPublished: true })}
-            />
-            <label className="form-label form-check-label mb-0" htmlFor="radioEmailShow">{t('Show')}</label>
-          </div>
-          <div className="form-check form-check-inline">
-            <input
-              type="radio"
-              id="radioEmailHide"
-              className="form-check-input"
-              name="userForm[isEmailPublished]"
-              checked={personalSettingsInfo?.isEmailPublished === false}
-              onChange={() => changePersonalSettingsHandler({ isEmailPublished: false })}
-            />
-            <label className="form-label form-check-label mb-0" htmlFor="radioEmailHide">{t('Hide')}</label>
-          </div>
-        </div>
-      </div>
+      {/* email 公開設定は廃止 */}
 
       <div className="row mt-3">
         <label className="text-start text-md-end col-md-3 col-form-label">{t('Language')}</label>

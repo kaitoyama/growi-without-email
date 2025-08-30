@@ -11,11 +11,7 @@ export const registerRules = (minPasswordLength: number): ValidationChain[] => {
       .isEmpty()
       .withMessage('message.Username field is required'),
     body('registerForm.name').not().isEmpty().withMessage('message.Name field is required'),
-    body('registerForm.email')
-      .isEmail()
-      .withMessage('message.Email format is invalid')
-      .exists()
-      .withMessage('message.Email field is required'),
+    // email は使用しないため検証を削除
     body('registerForm.password')
       .matches(/^[\x20-\x7F]*$/)
       .withMessage('message.Password has invalid character')

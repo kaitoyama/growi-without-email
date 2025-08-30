@@ -184,8 +184,7 @@ module.exports = function(crowi, app) {
    *                     type: string
    *                   username:
    *                     type: string
-   *                   email:
-   *                     type: string
+   *                   // email は使用しません
    *                   password:
    *                     type: string
    *     responses:
@@ -218,31 +217,22 @@ module.exports = function(crowi, app) {
 
     const name = registerForm.name;
     const username = registerForm.username;
-    const email = registerForm.email;
     const password = registerForm.password;
 
-    // email と username の unique チェックする
-    User.isRegisterable(email, username, (isRegisterable, errOn) => {
+    // username のみ unique チェック
+    User.isRegisterableUsername(username).then((isUsable) => {
       const errors = [];
-      if (!User.isEmailValid(email)) {
-        errors.push('message.email_address_could_not_be_used');
-      }
-      if (!isRegisterable) {
-        if (!errOn.username) {
-          errors.push('message.user_id_is_not_available');
-        }
-        if (!errOn.email) {
-          errors.push('message.email_address_is_already_registered');
-        }
+      if (!isUsable) {
+        errors.push('message.user_id_is_not_available');
       }
       if (errors.length > 0) {
-        logger.debug('isError user register error', errOn);
+        logger.debug('isError user register error');
         return res.apiv3Err(errors, 400);
       }
 
       const registrationMode = configManager.getConfig('security:registrationMode');
 
-      User.createUserByEmailAndPassword(name, username, email, password, undefined, async(err, userData) => {
+      User.createUserByEmailAndPassword(name, username, undefined, password, undefined, async(err, userData) => {
         if (err) {
           const errors = [];
           if (err.name === 'UserUpperLimitException') {

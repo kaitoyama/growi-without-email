@@ -339,8 +339,9 @@ module.exports = function(crowi, app) {
       return next(error);
     }
 
+    // email scope を要求しない
     passport.authenticate('google', {
-      scope: ['profile', 'email'],
+      scope: ['profile'],
     })(req, res);
   };
 
@@ -378,14 +379,11 @@ module.exports = function(crowi, app) {
       name,
     };
 
-    // Emails are not empty if it exists
-    // See https://github.com/passport/express-4.x-facebook-example/blob/dfce5495d0313174a1b5039bab2c2dcda7e0eb61/views/profile.ejs
-    // Both Facebook and Google use OAuth 2.0, the code is similar
-    // See https://github.com/jaredhanson/passport-google-oauth2/blob/723e8f3e8e711275f89e0163e2c77cfebae33f25/README.md#examples
-    if (response.emails != null) {
-      userInfo.email = response.emails[0].value;
-      userInfo.username = userInfo.email.slice(0, userInfo.email.indexOf('@'));
-    }
+    // email を使用しない運用に変更（メールアドレス由来の username 上書きを停止）
+    // if (response.emails != null) {
+    //   userInfo.email = response.emails[0].value;
+    //   userInfo.username = userInfo.email.slice(0, userInfo.email.indexOf('@'));
+    // }
 
     const externalAccount = await externalAccountService.getOrCreateUser(userInfo, providerId);
     if (!externalAccount) {
@@ -476,7 +474,8 @@ module.exports = function(crowi, app) {
       id: response[attrMapId],
       username: response[attrMapUserName],
       name: response[attrMapName],
-      email: response[attrMapMail],
+      // email を使用しない
+      // email: response[attrMapMail],
     };
     logger.debug('mapping response to userInfo', userInfo, response, attrMapId, attrMapUserName, attrMapMail);
 
@@ -524,7 +523,8 @@ module.exports = function(crowi, app) {
     const userInfo = {
       id: response[attrMapId],
       username: response[attrMapUsername],
-      email: response[attrMapMail],
+      // email を使用しない
+      // email: response[attrMapMail],
     };
 
     // determine name

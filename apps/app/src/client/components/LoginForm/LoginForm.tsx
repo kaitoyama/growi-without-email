@@ -65,10 +65,12 @@ export const LoginForm = (props: LoginFormProps): JSX.Element => {
   // For Register
   const [usernameForRegister, setUsernameForRegister] = useState('');
   const [nameForRegister, setNameForRegister] = useState('');
+  // email は使用しない
   const [emailForRegister, setEmailForRegister] = useState('');
   const [passwordForRegister, setPasswordForRegister] = useState('');
   const [registerErrors, setRegisterErrors] = useState<IErrorV3[]>([]);
   // For UserActivation
+  // email は使用しない
   const [emailForRegistrationOrder, setEmailForRegistrationOrder] = useState('');
 
   const [isSuccessToRagistration, setIsSuccessToRagistration] = useState(false);
@@ -288,7 +290,7 @@ export const LoginForm = (props: LoginFormProps): JSX.Element => {
     const registerForm = {
       username: usernameForRegister,
       name: nameForRegister,
-      email: emailForRegister,
+      // email は送信しない
       password: passwordForRegister,
     };
     try {
@@ -303,10 +305,7 @@ export const LoginForm = (props: LoginFormProps): JSX.Element => {
         router.push(redirectTo);
       }
 
-      if (isEmailAuthenticationEnabled) {
-        setEmailForRegistrationOrder(emailForRegister);
-        return;
-      }
+      // email 認証フローは廃止
     }
     catch (err) {
       // Execute if error exists
@@ -325,13 +324,8 @@ export const LoginForm = (props: LoginFormProps): JSX.Element => {
   }, [isRegistering, resetLoginErrors, resetRegisterErrors]);
 
   const renderRegisterForm = useCallback(() => {
-    let registerAction = '/register';
-
-    let submitText = t('Sign up');
-    if (isEmailAuthenticationEnabled) {
-      registerAction = '/user-activation/register';
-      submitText = t('page_register.send_email');
-    }
+    const registerAction = '/register';
+    const submitText = t('Sign up');
 
     return (
       <React.Fragment>
@@ -342,11 +336,7 @@ export const LoginForm = (props: LoginFormProps): JSX.Element => {
             {t('page_register.notice.restricted_defail')}
           </p>
         )}
-        { (!isMailerSetup && isEmailAuthenticationEnabled) && (
-          <p className="alert alert-danger">
-            <span>{t('commons:alert.please_enable_mailer')}</span>
-          </p>
-        )}
+        {/* メール送信に関する警告は廃止 */}
 
         {
           registerErrors != null && registerErrors.length > 0 && (
@@ -360,13 +350,7 @@ export const LoginForm = (props: LoginFormProps): JSX.Element => {
           )
         }
 
-        {
-          (isEmailAuthenticationEnabled && isSuccessToRagistration) && (
-            <p className="alert alert-success">
-              <span>{t('message.successfully_send_email_auth', { email: emailForRegistrationOrder })}</span>
-            </p>
-          )
-        }
+        {/* メール認証完了メッセージは廃止 */}
 
         <form role="form" onSubmit={e => handleRegisterFormSubmit(e, registerAction)} id="register-form">
 
@@ -408,64 +392,34 @@ export const LoginForm = (props: LoginFormProps): JSX.Element => {
             </div>
           )}
 
-          <div className="input-group">
-            <span className="text-white opacity-75 d-flex align-items-center">
-              <span className="material-symbols-outlined">mail</span>
-            </span>
-            {/* email */}
-            <input
-              type="email"
-              disabled={!isMailerSetup && isEmailAuthenticationEnabled}
-              className="form-control rounded ms-2"
-              onChange={(e) => { setEmailForRegister(e.target.value) }}
-              placeholder={t('Email')}
-              name="email"
-              defaultValue={props.email}
-              required
-            />
-          </div>
+          {/* email 入力は廃止 */}
 
-          {registrationWhitelist.length > 0 && (
-            <>
-              <p className="form-text">{t('page_register.form_help.email')}</p>
-              <ul>
-                {registrationWhitelist.map((elem) => {
-                  return (
-                    <li key={elem}>
-                      <code>{elem}</code>
-                    </li>
-                  );
-                })}
-              </ul>
-            </>
-          )}
+          {/* email whitelist の説明は廃止 */}
 
-          {!isEmailAuthenticationEnabled && (
-            <div>
-              <div className="input-group">
-                <span className="text-white opacity-75 d-flex align-items-center">
-                  <span className="material-symbols-outlined">lock</span>
-                </span>
-                {/* Password */}
-                <input
-                  type="password"
-                  className="form-control rounded ms-2"
-                  onChange={(e) => { setPasswordForRegister(e.target.value) }}
-                  placeholder={t('Password')}
-                  name="password"
-                  required
-                  minLength={minPasswordLength}
-                />
-              </div>
+          <div>
+            <div className="input-group">
+              <span className="text-white opacity-75 d-flex align-items-center">
+                <span className="material-symbols-outlined">lock</span>
+              </span>
+              {/* Password */}
+              <input
+                type="password"
+                className="form-control rounded ms-2"
+                onChange={(e) => { setPasswordForRegister(e.target.value) }}
+                placeholder={t('Password')}
+                name="password"
+                required
+                minLength={minPasswordLength}
+              />
             </div>
-          )}
+          </div>
 
           {/* Sign up button (submit) */}
           <div className="input-group justify-content-center my-4">
             <button
               type="submit"
               className="btn btn-secondary btn-register d-flex col-7"
-              disabled={(!isMailerSetup && isEmailAuthenticationEnabled) || isLoading}
+              disabled={isLoading}
             >
               <span>
                 {isLoading ? (
@@ -517,18 +471,7 @@ export const LoginForm = (props: LoginFormProps): JSX.Element => {
                   </div>
                 )}
                 {isSomeExternalAuthEnabled && renderExternalAuthLoginForm()}
-                {isLocalOrLdapStrategiesEnabled && isPasswordResetEnabled && (
-                  <div className="mt-4">
-                    <a
-                      href="/forgot-password"
-                      className="btn btn-sm btn-secondary btn-function col-10 col-sm-9 mx-auto py-1 d-flex"
-                      style={{ pointerEvents: isLoading ? 'none' : 'auto' }}
-                    >
-                      <span className="material-symbols-outlined">vpn_key</span>
-                      <span className="flex-grow-1">{t('forgot_password.forgot_password')}</span>
-                    </a>
-                  </div>
-                )}
+                {/* パスワードリセット導線は廃止 */}
                 {/* Sign up link */}
                 {isRegistrationEnabled && (
                   <div className="mt-2">

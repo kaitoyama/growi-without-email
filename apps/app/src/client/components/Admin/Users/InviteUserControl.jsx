@@ -14,12 +14,13 @@ class InviteUserControl extends React.Component {
   render() {
     const { t, adminUsersContainer } = this.props;
 
+    // メールによるユーザー招待は無効化
     return (
       <Fragment>
-        <button type="button" className="btn btn-outline-secondary" onClick={adminUsersContainer.toggleUserInviteModal}>
+        <button type="button" className="btn btn-outline-secondary" disabled>
           {t('admin:user_management.invite_users')}
         </button>
-        <UserInviteModal />
+        {/* <UserInviteModal /> */}
       </Fragment>
     );
   }

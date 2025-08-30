@@ -123,7 +123,7 @@ export class InstallerService {
     }
   }
 
-  async install(firstAdminUserToSave: Pick<IUser, 'name' | 'username' | 'email' | 'password'>, globalLang: Lang, options?: AutoInstallOptions): Promise<IUser> {
+  async install(firstAdminUserToSave: Pick<IUser, 'name' | 'username' | 'password'>, globalLang: Lang, options?: AutoInstallOptions): Promise<IUser> {
     await this.initDB(globalLang, options);
 
     const User = mongoose.model<IUser, { createUser }>('User');
@@ -143,9 +143,10 @@ export class InstallerService {
     try {
       // create first admin user
       const {
-        name, username, email, password,
+        name, username, password,
       } = firstAdminUserToSave;
-      const adminUser = await User.createUser(name, username, email, password, globalLang);
+      // email を使用しないため undefined を渡す
+      const adminUser = await User.createUser(name, username, undefined, password, globalLang);
       await (adminUser as any).asyncGrantAdmin();
 
       // create initial pages

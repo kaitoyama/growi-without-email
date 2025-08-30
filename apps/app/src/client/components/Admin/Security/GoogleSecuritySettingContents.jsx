@@ -133,27 +133,7 @@ class GoogleSecurityManagementContents extends React.Component {
               </div>
             </div>
 
-            <div className="row mb-3">
-              <div className="offset-3 col-6">
-                <div className="form-check form-check-success">
-                  <input
-                    id="bindByUserNameGoogle"
-                    className="form-check-input"
-                    type="checkbox"
-                    checked={adminGoogleSecurityContainer.state.isSameEmailTreatedAsIdenticalUser || false}
-                    onChange={() => { adminGoogleSecurityContainer.switchIsSameEmailTreatedAsIdenticalUser() }}
-                  />
-                  <label
-                    className="form-check-label"
-                    htmlFor="bindByUserNameGoogle"
-                    dangerouslySetInnerHTML={{ __html: t('security_settings.Treat email matching as identical') }}
-                  />
-                </div>
-                <p className="form-text text-muted">
-                  <small dangerouslySetInnerHTML={{ __html: t('security_settings.Treat email matching as identical_warn') }} />
-                </p>
-              </div>
-            </div>
+            {/* Email 同一判定の設定は無効化 */}
 
             <div className="row mb-4">
               <div className="offset-3 col-5">

@@ -731,28 +731,8 @@ module.exports = (crowi) => {
    *                      $ref: '#/components/schemas/SmtpSettingResponseParams'
    */
   router.put('/smtp-setting', accessTokenParser([SCOPE.WRITE.ADMIN.APP]), loginRequiredStrictly, adminRequired, addActivity,
-    validator.smtpSetting, apiV3FormValidator,
     async(req, res) => {
-      const requestMailSettingParams = {
-        'mail:from': req.body.fromAddress,
-        'mail:transmissionMethod': req.body.transmissionMethod,
-        'mail:smtpHost': req.body.smtpHost,
-        'mail:smtpPort': req.body.smtpPort,
-        'mail:smtpUser': req.body.smtpUser,
-        'mail:smtpPassword': req.body.smtpPassword,
-      };
-
-      try {
-        const mailSettingParams = await updateMailSettinConfig(requestMailSettingParams);
-        const parameters = { action: SupportedAction.ACTION_ADMIN_MAIL_SMTP_UPDATE };
-        activityEvent.emit('update', res.locals.activity._id, parameters);
-        return res.apiv3({ mailSettingParams });
-      }
-      catch (err) {
-        const msg = 'Error occurred in updating smtp setting';
-        logger.error('Error', err);
-        return res.apiv3Err(new ErrorV3(msg, 'update-smtpSetting-failed'));
-      }
+      return res.apiv3Err(new ErrorV3('Mailer settings are disabled in this instance', 'mailer-disabled'));
     });
 
   /**
@@ -775,20 +755,7 @@ module.exports = (crowi) => {
    *                  description: Empty object
    */
   router.post('/smtp-test', accessTokenParser([SCOPE.WRITE.ADMIN.APP]), loginRequiredStrictly, adminRequired, addActivity, async(req, res) => {
-    const { t } = await getTranslation({ lang: req.user.lang });
-
-    try {
-      await sendTestEmail(req.user.email);
-      const parameters = { action: SupportedAction.ACTION_ADMIN_MAIL_TEST_SUBMIT };
-      activityEvent.emit('update', res.locals.activity._id, parameters);
-      return res.apiv3({});
-    }
-    catch (err) {
-      const msg = t('validation.failed_to_send_a_test_email');
-      logger.error('Error', err);
-      logger.debug('Error validate mail setting: ', err);
-      return res.apiv3Err(new ErrorV3(msg, 'send-email-with-smtp-failed'));
-    }
+    return res.apiv3Err(new ErrorV3('Mailer settings are disabled in this instance', 'mailer-disabled'));
   });
 
   /**
@@ -816,32 +783,8 @@ module.exports = (crowi) => {
    *                  $ref: '#/components/schemas/SesSettingResponseParams'
    */
   router.put('/ses-setting', accessTokenParser([SCOPE.WRITE.ADMIN.APP]), loginRequiredStrictly, adminRequired, addActivity,
-    validator.sesSetting, apiV3FormValidator,
     async(req, res) => {
-      const { mailService } = crowi;
-
-      const requestSesSettingParams = {
-        'mail:from': req.body.fromAddress,
-        'mail:transmissionMethod': req.body.transmissionMethod,
-        'mail:sesAccessKeyId': req.body.sesAccessKeyId,
-        'mail:sesSecretAccessKey': req.body.sesSecretAccessKey,
-      };
-
-      let mailSettingParams;
-      try {
-        mailSettingParams = await updateMailSettinConfig(requestSesSettingParams);
-      }
-      catch (err) {
-        const msg = 'Error occurred in updating ses setting';
-        logger.error('Error', err);
-        return res.apiv3Err(new ErrorV3(msg, 'update-ses-setting-failed'));
-      }
-
-      await mailService.initialize();
-      mailService.publishUpdatedMessage();
-      const parameters = { action: SupportedAction.ACTION_ADMIN_MAIL_SES_UPDATE };
-      activityEvent.emit('update', res.locals.activity._id, parameters);
-      return res.apiv3({ mailSettingParams });
+      return res.apiv3Err(new ErrorV3('Mailer settings are disabled in this instance', 'mailer-disabled'));
     });
 
   /**

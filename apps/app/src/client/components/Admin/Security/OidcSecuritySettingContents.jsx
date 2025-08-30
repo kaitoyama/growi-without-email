@@ -347,21 +347,7 @@ class OidcSecurityManagementContents extends React.Component {
               </div>
             </div>
 
-            <div className="row mb-4">
-              <label htmlFor="oidcAttrMapEmail" className="text-start text-md-end col-md-3 col-form-label">{t('Email')}</label>
-              <div className="col-md-6">
-                <input
-                  className="form-control"
-                  type="text"
-                  name="oidcAttrMapEmail"
-                  value={adminOidcSecurityContainer.state.oidcAttrMapEmail || ''}
-                  onChange={e => adminOidcSecurityContainer.changeOidcAttrMapEmail(e.target.value)}
-                />
-                <p className="form-text text-muted">
-                  <small dangerouslySetInnerHTML={{ __html: t('security_settings.OAuth.OIDC.mapping_detail', { target: t('Email') }) }} />
-                </p>
-              </div>
-            </div>
+            {/* Email マッピングは無効化 */}
 
             <div className="row mb-4">
               <label className="form-label text-start text-md-end col-md-3 col-form-label">{t('security_settings.callback_URL')}</label>
@@ -407,27 +393,7 @@ class OidcSecurityManagementContents extends React.Component {
               </div>
             </div>
 
-            <div className="row mb-4">
-              <div className="offset-md-3 col-md-6">
-                <div className="form-check form-check-success">
-                  <input
-                    id="bindByEmail-oidc"
-                    className="form-check-input"
-                    type="checkbox"
-                    checked={adminOidcSecurityContainer.state.isSameEmailTreatedAsIdenticalUser || false}
-                    onChange={() => { adminOidcSecurityContainer.switchIsSameEmailTreatedAsIdenticalUser() }}
-                  />
-                  <label
-                    className="form-label form-check-label"
-                    htmlFor="bindByEmail-oidc"
-                    dangerouslySetInnerHTML={{ __html: t('security_settings.Treat email matching as identical') }}
-                  />
-                </div>
-                <p className="form-text text-muted">
-                  <small dangerouslySetInnerHTML={{ __html: t('security_settings.Treat email matching as identical_warn') }} />
-                </p>
-              </div>
-            </div>
+            {/* Email 同一判定の設定は無効化 */}
 
             <div className="row my-3">
               <div className="offset-3 col-5">

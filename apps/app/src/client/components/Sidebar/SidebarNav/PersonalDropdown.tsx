@@ -60,10 +60,7 @@ export const PersonalDropdown = (): JSX.Element => {
               <small className="material-symbols-outlined me-1 pb-0 fs-6">person</small>
               <span>{currentUser.username}</span>
             </div>
-            <div className="d-flex align-items-center">
-              <span className="material-symbols-outlined me-1 pb-0 fs-6">mail</span>
-              <span className="item-text-email">{currentUser.email}</span>
-            </div>
+            {/* email 表示は廃止 */}
           </DropdownItem>
 
           <DropdownItem className="my-3" divider />

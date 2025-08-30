@@ -69,8 +69,9 @@ module.exports = (crowi, app) => {
   routerForAuth.post('/register',
     applicationInstalled, registerFormValidator.registerRules(minPasswordLength), registerFormValidator.registerValidation, addActivity, login.register);
 
-  routerForAuth.post('/user-activation/register', applicationInstalled, userActivation.registerRules(minPasswordLength),
-    userActivation.validateRegisterForm, userActivation.registerAction(crowi));
+  // メール認証による登録受付は無効化
+  // routerForAuth.post('/user-activation/register', applicationInstalled, userActivation.registerRules(minPasswordLength),
+  //   userActivation.validateRegisterForm, userActivation.registerAction(crowi));
 
   // installer
   routerForAdmin.use('/installer', isInstalled
@@ -108,7 +109,8 @@ module.exports = (crowi, app) => {
 
   router.use('/staffs', require('./staffs')(crowi));
 
-  router.use('/forgot-password', require('./forgot-password')(crowi));
+  // パスワードリセットAPIは無効化
+  // router.use('/forgot-password', require('./forgot-password')(crowi));
 
   const user = require('../user')(crowi, null);
   router.get('/check-username', user.api.checkUsername);
